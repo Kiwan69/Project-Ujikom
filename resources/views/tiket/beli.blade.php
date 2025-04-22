@@ -1,45 +1,107 @@
 @extends('layouts.frontend.user')
 
 @section('content')
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Pembelian Tiket</h2>
+<style>
+    body {
+        background-color: #f3f4f6;
+    }
 
-        <div class="mb-4 border rounded-lg p-4 bg-gray-50">
-            <p class="text-sm text-gray-500">Kategori Tiket</p>
-            <p class="text-lg font-semibold text-gray-700">{{ $tiket->kategori }}</p>
+    .register-card {
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        background-color: #ffffff;
+    }
 
-            <p class="text-sm text-gray-500 mt-2">Harga</p>
-            <p class="text-green-600 font-bold text-lg">Rp{{ number_format($tiket->harga, 0, ',', '.') }}</p>
+    .register-card-header {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: #ffffff;
+        font-weight: 600;
+        text-align: center;
+        padding: 1.5rem;
+        font-size: 1.5rem;
+    }
 
-            <p class="text-sm text-gray-500 mt-2">Stok Tersedia</p>
-            <p class="text-gray-700">{{ $tiket->stok }}</p>
+    .btn-primary {
+        background-color: #1e3c72;
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.6rem 1.5rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #16335e;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card register-card">
+
+                {{-- Header --}}
+                <div class="register-card-header">
+                    Form Pembelian Tiket
+                </div>
+
+                {{-- Card Body --}}
+                <div class="card-body px-4 py-4">
+
+                    {{-- Info Tiket --}}
+                    <div class="mb-4 text-sm text-gray-700">
+                        <div class="flex justify-between">
+                            <span><strong>Kategori:</strong> {{ $tiket->kategori }}</span>
+                        </div>
+                        <div class="mt-1">
+                            <strong>Harga:</strong> <span class="text-green-600">Rp{{ number_format($tiket->harga, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+
+                    {{-- Form --}}
+                    <form action="{{ route('tiket.konfirmasi') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="id_tiket" value="{{ $tiket->id }}">
+
+                        <div class="mb-3">
+                            <label class="form-label">Nama Lengkap</label>
+                            <input type="text" name="nama" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">telepon</label>
+                            <input type="number" name="telepon" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Alamat</label>
+                            <input type="text" name="alamat" class="form-control" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Jumlah Tiket</label>
+                            <input type="number" name="jumlah" min="1" max="{{ $tiket->stok }}" class="form-control" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary w-100">
+                                Konfirmasi Pembelian
+                            </button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="{{ route('tiket') }}" class="text-sm text-blue-600 hover:underline">← Kembali ke daftar tiket</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
         </div>
-
-        <form action="{{ route('tiket.konfirmasi') }}" method="POST" class="space-y-4">
-            @csrf
-            <input type="hidden" name="tiket_id" value="{{ $tiket->id }}">
-
-            <div>
-                <label class="block text-gray-700 text-sm mb-1">Nama Lengkap</label>
-                <input type="text" name="nama" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-400" required>
-            </div>
-
-            <div>
-                <label class="block text-gray-700 text-sm mb-1">Email</label>
-                <input type="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-400" required>
-            </div>
-
-            <div>
-                <label class="block text-gray-700 text-sm mb-1">Jumlah Tiket</label>
-                <input type="number" name="jumlah" min="1" max="{{ $tiket->stok }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-400" required>
-            </div>
-
-            <div class="flex justify-between items-center pt-4">
-                <a href="{{ route('tiket.index') }}" class="text-blue-600 hover:underline text-sm">← Kembali</a>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all">Konfirmasi Pembelian</button>
-            </div>
-        </form>
     </div>
 </div>
 @endsection

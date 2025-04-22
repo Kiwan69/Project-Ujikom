@@ -35,11 +35,18 @@
   <link id="pagestyle" href="{{asset('backend/assets/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
 
   @yield('styles')
+  <!-- Add SweetAlert CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.css">
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
   <div class="min-height-300 bg-primary position-absolute w-100"></div>
 
+
+    <!-- Add SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.js"></script>
+    @stack('scripts') <!-- Tempat script custom tambahan -->
+    
   {{-- sidebar --}}
   @include('layouts.backend.sidebar')
   {{-- end sidebar --}}

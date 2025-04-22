@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Tiket extends Model
 {
     use HasFactory;
+
+    // Nama tabel eksplisit
+    protected $table = 'tikets';
+
     protected $fillable = [
         'stok',
         'harga',
@@ -15,9 +19,9 @@ class Tiket extends Model
         'status',
         'id_acara',
     ];
+
     public function acara()
     {
         return $this->belongsTo(Acara::class, 'id_acara');
     }
-
 }

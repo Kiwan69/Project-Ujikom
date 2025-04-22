@@ -10,6 +10,7 @@ class Pemesanan extends Model
     use HasFactory;
     protected $fillable = [
         'id_pengguna',
+        'id_user',
         'id_tiket',
         'jumlah',
         'tanggal_pemesanan',
@@ -17,6 +18,10 @@ class Pemesanan extends Model
     public function pengguna()
     {
         return $this->belongsTo(Pengguna::class, 'id_pengguna');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function tiket()

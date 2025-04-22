@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Tiket;
 use App\Models\Acara;
+use App\Models\User;
+use App\Models\Pemesanan;
+use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TiketController extends Controller
 {
@@ -143,16 +147,41 @@ class TiketController extends Controller
 
     public function konfirmasi(Request $request)
     {
-        // Validasi data
-        $data = $request->validate([
-            'nama' => 'required|string|max:100',
+        $request->validate([
+            'id_tiket' => 'required|exists:tikets,id',
+            'nama' => 'required|string',
             'email' => 'required|email',
+            'alamat' => 'required|string',
+            'telepon' => ['required', 'regex:/^(\+62|0)[0-9]{9,15}$/'],
             'jumlah' => 'required|integer|min:1',
-            // tambahkan field lain sesuai kebutuhan
         ]);
 
-        // Simpan ke database, kirim email, atau proses lainnya
+        // Temukan tiket yang dipilih
+        $tiket = Tiket::findOrFail($request->id_tiket);
 
-        return redirect()->route('tiket.index')->with('success', 'Pembelian tiket berhasil!');
+        // Simpan pengguna jika belum ada
+        $pengguna = Pengguna::firstOrCreate(
+            ['email' => $request->email],
+            ['nama' => $request->nama, 'telepon' => $request->telepon, 'alamat' => $request->alamat, 'id_user' => auth()->user()->id]
+        );
+
+        // Simpan data pemesanan
+        Pemesanan::create([
+            'id_pengguna' => $pengguna->id,
+            'id_user' => $pengguna->id,
+            'id_tiket' => $request->id_tiket,
+            'jumlah' => $request->jumlah,
+            'tanggal_pemesanan' => now(),
+        ]);
+
+        // Kurangi stok tiket
+        $tiket->stok -= $request->jumlah;
+        $tiket->save();
+
+        // Menampilkan SweetAlert
+        Alert::success('Success', 'Tiket berhasil dibeli!')->autoclose(1500);
+
+        // Mengalihkan ke halaman tiket dengan pesan sukses
+        return redirect()->route('tiket')->with('success', 'Pembelian berhasil dikonfirmasi!');
     }
 }

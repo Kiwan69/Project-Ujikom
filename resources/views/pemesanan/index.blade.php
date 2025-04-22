@@ -16,7 +16,9 @@
                         <tr>
                             <th class="text-center">No</th>
                             <th class="text-center">Nama Pengguna</th>
+                            <th class="text-center">Email Pengguna</th>
                             <th class="text-center">Kategori Tiket</th>
+                            <th class="text-center">Telepon</th>
                             <th class="text-center">Jumlah</th>
                             <th class="text-center">Tanggal & Waktu</th>
                             <th class="text-center">Aksi</th>
@@ -27,7 +29,9 @@
                             <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center">{{ $item->pengguna->nama }}</td>
+                                <td class="text-center">{{ $item->user->email }}</td>
                                 <td class="text-center">{{ $item->tiket->kategori }}</td>
+                                <td class="text-center">{{ $item->pengguna->telepon }}</td>
                                 <td class="text-center">{{ $item->jumlah }}</td>
                                 <td class="text-center">
                                     <span class="badge bg-info text-white">

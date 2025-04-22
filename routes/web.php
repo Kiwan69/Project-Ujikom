@@ -59,6 +59,7 @@ Route::post('/tiket/konfirmasi', [TiketController::class, 'konfirmasi'])->name('
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('layouts.backend.admin');
+        // Route::get('/admin/pemesanan', [\App\Http\Controllers\AdminPemesananController::class, 'index'])->name('admin.pemesanan');
     });
     Route::get('/profile', function () {
         return view('profile');

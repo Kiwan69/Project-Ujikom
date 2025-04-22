@@ -6,11 +6,22 @@
             <div class="text-center mb-5">
                 <h2 class="fw-bold text-uppercase">Pesan Tiket Anda</h2>
                 <p class="text-muted">Dapatkan pengalaman terbaik dengan memesan tiket pilihan Anda!</p>
-                @if (request()->has('kategori'))
+                <div class="mb-3">
+                    <form action="{{ route('tiket') }}" method="GET" class="d-flex justify-content-center">
+                        <select name="kategori" class="form-select w-auto me-2" onchange="this.form.submit()">
+                            <option value="">-- Semua Kategori --</option>
+                            <option value="VIP" {{ request('kategori') == 'VIP' ? 'selected' : '' }}>VIP</option>
+                            <option value="Reguler" {{ request('kategori') == 'Reguler' ? 'selected' : '' }}>Reguler</option>
+                            <option value="Ekonomi" {{ request('kategori') == 'Ekonomi' ? 'selected' : '' }}>Ekonomi</option>
+                        </select>
+                        <noscript><button type="submit" class="btn btn-primary">Filter</button></noscript>
+                    </form>
+                </div>
+                {{-- @if (request()->has('kategori'))
                     <h5 class="text-primary">
                         Menampilkan Tiket Kategori: <strong>{{ request('kategori') }}</strong>
                     </h5>
-                @endif
+                @endif --}}
             </div>
             <div class="row g-4">
                 @forelse($tiket as $data)
@@ -26,7 +37,7 @@
                                 <p class="fw-bold">
                                     Tiket:
                                     <span
-                                        class="text-{{ $data->kategori == 'VIP' ? 'danger' : ($data->kategori == 'Regulet' ? 'primary' : ($data->kategori == 'Ekonomi' ? 'warning' : 'dark')) }}">
+                                        class="text-{{ $data->kategori == 'VIP' ? 'danger' : ($data->kategori == 'Reguler' ? 'primary' : ($data->kategori == 'Ekonomi' ? 'warning' : 'dark')) }}">
                                         {{ $data->kategori }}
                                     </span>
                                 </p>

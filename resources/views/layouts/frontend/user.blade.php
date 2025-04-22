@@ -20,9 +20,19 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{asset('frontend/assets/css/styles.css')}}" rel="stylesheet" />
     @stack('styles')
+
+    <head>
+        <!-- Add SweetAlert CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.css">
+    </head>
+
 </head>
 
 <body class="d-flex flex-column h-100">
+     <!-- Add SweetAlert JS -->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.5/dist/sweetalert2.min.js"></script>
+     @stack('scripts') <!-- Tempat script custom tambahan -->
+     
     <main class="flex-shrink-0">
         <!-- Navbar -->
         @include('layouts.frontend.navbar')
